@@ -3,8 +3,8 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <IncludePath>G:\AlicePro\DSA_VS\DSA_VS\include;$(IncludePath)</IncludePath>
-    <SourcePath>G:\AlicePro\DSA_VS\DSA_VS\source;$(SourcePath)</SourcePath>
+    <IncludePath>G:\AlicePro\DSA_VS\vector\include;$(IncludePath)</IncludePath>
+    <SourcePath>G:\AlicePro\DSA_VS\vector\source;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup />
   <ItemGroup />

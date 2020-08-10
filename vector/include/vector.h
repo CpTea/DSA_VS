@@ -109,7 +109,7 @@ template<typename ElemType, int capacity>
 inline int vector<ElemType, capacity>::remove(int left, int right)
 {
     if (left == right) return 0;
-    while (r < m_size) m_pData[left++] = m_pData[right++];
+    while (right < m_size) m_pData[left++] = m_pData[right++];
     m_size = left;
     shrink();
     return right - left;
