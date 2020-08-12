@@ -5,8 +5,8 @@
 #ifndef __CPTEA_ALGORTIHMS_FUNC_DEF
 #define __CPTEA_ALGORTIHMS_FUNC_DEF
 
-#define Asc  lq
-#define Desc gq
+#define LEq Asc
+#define GEq Desc
 
 #define Parent(i) (((i)-1) >> 1)
 #define LChild(i) (1 + ((i) << 1))
@@ -16,16 +16,12 @@
 #define RChildValid(n, i) InHeap(n, RChild(i))
 #define Compare(PQ, i, j, order) (!order(PQ[j], PQ[i]) ? j : i)
 #define ProperParent(PQ, n, i, order) (RChildValid(n, i) ? Compare(PQ, Compare(PQ, i, LChild(i), order), RChild(i), order) : (LChildValid(n, i) ? Compare(PQ, i, LChild(i), order) : i))
-//#define Bigger(PQ, i, j) (lt( PQ[i], PQ[j]) ? j : i)
-//#define ProperParent(PQ, n, i) (RChildValid(n, i) ? Bigger(PQ, Bigger(PQ, i, LChild(i)), RChild(i)) : (LChildValid(n, i) ? Bigger(PQ, i, LChild(i)) : i ))
 
 namespace cptea
 {
+    template <typename ElemType> bool Asc(const ElemType&, const ElemType&);
+    template <typename ElemType> bool Desc(const ElemType&, const ElemType&);
     template <typename ElemType> void swap(ElemType&, ElemType&);
-    template <typename ElemType> bool lq(const ElemType&, const ElemType&);
-    template <typename ElemType> bool lt(const ElemType&, const ElemType&);
-    template <typename ElemType> bool gq(const ElemType&, const ElemType&);
-    template <typename ElemType> bool gt(const ElemType&, const ElemType&);
     template <typename ElemType> bool eq(const ElemType&, const ElemType&);
 
     template <typename ElemType>
@@ -56,27 +52,15 @@ void cptea::swap(ElemType& x, ElemType& y)
 }
 
 template<typename ElemType>
-bool cptea::lq(const ElemType& x, const ElemType& y)
+bool cptea::Asc(const ElemType& x, const ElemType& y)
 {
     return x <= y;
 }
 
 template<typename ElemType>
-bool cptea::lt(const ElemType& x, const ElemType& y)
-{
-    return x < y;
-}
-
-template<typename ElemType>
-bool cptea::gq(const ElemType& x, const ElemType& y)
+bool cptea::Desc(const ElemType& x, const ElemType& y)
 {
     return x >= y;
-}
-
-template<typename ElemType>
-bool cptea::gt(const ElemType& x, const ElemType& y)
-{
-    return x > y;
 }
 
 template<typename ElemType>

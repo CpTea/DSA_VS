@@ -9,26 +9,26 @@
 #define __VECTOR_DEF
 
 template <typename ElemType>
-using List = std::initializer_list<ElemType>;
+using iList = std::initializer_list<ElemType>;
 
 template <typename ElemType, int capacity = 5>
-class vector
+class Vector
 {
     using Order = cptea::Order<ElemType>;
 
     template<class T, int cap>
-    friend std::ostream& operator<<(std::ostream& os, const vector<T, cap>& vec);
+    friend std::ostream& operator<<(std::ostream& os, const Vector<T, cap>& vec);
 
 public:
     // initialize
-    vector(int size = 0, ElemType default_val = 0);
-    vector(const ElemType arr[], int len);
-    vector(const ElemType arr[], int left, int right);
-    vector(const vector& vec);
-    vector(const vector& vec, int left, int right);
-    vector(const List<ElemType>& li);
-    vector(const List<ElemType>& li, int left, int right);
-    ~vector();
+    Vector(int size = 0, ElemType default_val = 0);
+    Vector(const ElemType arr[], int len);
+    Vector(const ElemType arr[], int left, int right);
+    Vector(const Vector& vec);
+    Vector(const Vector& vec, int left, int right);
+    Vector(const iList<ElemType>& li);
+    Vector(const iList<ElemType>& li, int left, int right);
+    ~Vector();
 
     // read only
     int size() const;
@@ -56,7 +56,7 @@ public:
 
 protected:
     void clone(const ElemType arr[], int left, int right);
-    void clone(const List<ElemType>& li, int left, int right);
+    void clone(const iList<ElemType>& li, int left, int right);
     void expand();
     void shrink();
     int  extremum(int left, int right, Order order);
@@ -85,7 +85,7 @@ private:
 #define __VECTOR_IMPL
 
 template<class ElemType, int capacity>
-inline vector<ElemType, capacity>::vector(int size, ElemType default_val)
+inline Vector<ElemType, capacity>::Vector(int size, ElemType default_val)
 {
     m_pData = new ElemType[m_capacity = capacity];
     if (size > capacity) size = capacity;
@@ -93,87 +93,87 @@ inline vector<ElemType, capacity>::vector(int size, ElemType default_val)
 }
 
 template<typename ElemType, int capacity>
-inline vector<ElemType, capacity>::vector(const ElemType arr[], int len)
+inline Vector<ElemType, capacity>::Vector(const ElemType arr[], int len)
 {
     clone(arr, 0, len);
 }
 
 template<typename ElemType, int capacity>
-inline vector<ElemType, capacity>::vector(const ElemType arr[], int left, int right)
+inline Vector<ElemType, capacity>::Vector(const ElemType arr[], int left, int right)
 {
     clone(arr, left, right);
 }
 
 template<typename ElemType, int capacity>
-inline vector<ElemType, capacity>::vector(const vector& vec)
+inline Vector<ElemType, capacity>::Vector(const Vector& vec)
 {
     clone(vec.m_pData, 0, vec.m_size);
 }
 
 template<typename ElemType, int capacity>
-inline vector<ElemType, capacity>::vector(const vector& vec, int left, int right)
+inline Vector<ElemType, capacity>::Vector(const Vector& vec, int left, int right)
 {
     clone(vec.m_pData, left, right);
 }
 
 template<typename ElemType, int capacity>
-inline vector<ElemType, capacity>::vector(const List<ElemType>& li)
+inline Vector<ElemType, capacity>::Vector(const iList<ElemType>& li)
 {
     clone(li, 0, (int)li.size());
 }
 
 template<typename ElemType, int capacity>
-inline vector<ElemType, capacity>::vector(const List<ElemType>& li, int left, int right)
+inline Vector<ElemType, capacity>::Vector(const iList<ElemType>& li, int left, int right)
 {
     clone(li, left, right);
 }
 
 template<typename ElemType, int capacity>
-inline vector<ElemType, capacity>::~vector()
+inline Vector<ElemType, capacity>::~Vector()
 {
     delete[] m_pData;
     m_pData = nullptr;
 }
 
 template<typename ElemType, int capacity>
-inline int vector<ElemType, capacity>::size() const
+inline int Vector<ElemType, capacity>::size() const
 {
     return m_size;
 }
 
 template<typename ElemType, int capacity>
-inline bool vector<ElemType, capacity>::empty() const
+inline bool Vector<ElemType, capacity>::empty() const
 {
     return !m_size;
 }
 
 template<class ElemType, int capacity>
-inline int vector<ElemType, capacity>::indexOf(const ElemType& el, int left, int right) const
+inline int Vector<ElemType, capacity>::indexOf(const ElemType& el, int left, int right) const
 {
     while ((left < right--) && (el != m_pData[right]));
     return right;
 }
 
 template<typename ElemType, int capacity>
-inline int vector<ElemType, capacity>::indexOf(const ElemType& el) const
+inline int Vector<ElemType, capacity>::indexOf(const ElemType& el) const
 {
     return indexOf(el, 0, m_size);
 }
 
 template<typename ElemType, int capacity>
-inline int vector<ElemType, capacity>::indexOfSorted(const ElemType& el, Order order) const
+inline int Vector<ElemType, capacity>::indexOfSorted(const ElemType& el, Order order) const
 {
     return indexOfSorted(el, 0, m_size, order);
 }
 
 template<typename ElemType, int capacity>
-inline int vector<ElemType, capacity>::indexOfSorted(const ElemType& el, int left, int right, Order order) const
+inline int Vector<ElemType, capacity>::indexOfSorted(const ElemType& el, int left, int right, Order order) const
 {
     return binSearch(el, left, right, order);
 }
 
 template<typename ElemType, int capacity>
-inline void vector<ElemType, capacity>::sort(int left, int right, Order order, int method)
+inline void Vector<ElemType, capacity>::sort(int left, int right, Order order, int method)
 {
     switch (method)
     {
@@ -188,26 +188,26 @@ inline void vector<ElemType, capacity>::sort(int left, int right, Order order, i
 }
 
 template<typename ElemType, int capacity>
-inline void vector<ElemType, capacity>::sort(Order order, int method)
+inline void Vector<ElemType, capacity>::sort(Order order, int method)
 {
     return sort(0, m_size, order, method);
 }
 
 template<typename ElemType, int capacity>
-inline void vector<ElemType, capacity>::shuffle(int left, int right)
+inline void Vector<ElemType, capacity>::shuffle(int left, int right)
 {
     ElemType* p = m_pData + left;
     for (int i = right - left; i > 0; i--) cptea::swap(p[i - 1], p[rand() % i]);
 }
 
 template<typename ElemType, int capacity>
-inline void vector<ElemType, capacity>::shuffle()
+inline void Vector<ElemType, capacity>::shuffle()
 {
     return shuffle(0, m_size);
 }
 
 template<typename ElemType, int capacity>
-inline int vector<ElemType, capacity>::deduplicate()
+inline int Vector<ElemType, capacity>::deduplicate()
 {
     int oldSize = m_size;
     int i = 1;
@@ -218,7 +218,7 @@ inline int vector<ElemType, capacity>::deduplicate()
 }
 
 template<typename ElemType, int capacity>
-inline int vector<ElemType, capacity>::deduplicateBySorted()
+inline int Vector<ElemType, capacity>::deduplicateBySorted()
 {
     int i = 0, j = 0;
     while (++j < m_size)
@@ -229,19 +229,19 @@ inline int vector<ElemType, capacity>::deduplicateBySorted()
 }
 
 template<typename ElemType, int capacity>
-inline ElemType& vector<ElemType, capacity>::operator[](int index)
+inline ElemType& Vector<ElemType, capacity>::operator[](int index)
 {
     return m_pData[index];
 }
 
 template<typename ElemType, int capacity>
-inline const ElemType& vector<ElemType, capacity>::operator[](int index) const
+inline const ElemType& Vector<ElemType, capacity>::operator[](int index) const
 {
     return m_pData[index];
 }
 
 template<typename ElemType, int capacity>
-inline int vector<ElemType, capacity>::remove(int left, int right)
+inline int Vector<ElemType, capacity>::remove(int left, int right)
 {
     if (left == right) return 0;
     while (right < m_size) m_pData[left++] = m_pData[right++];
@@ -251,7 +251,7 @@ inline int vector<ElemType, capacity>::remove(int left, int right)
 }
 
 template<typename ElemType, int capacity>
-inline ElemType vector<ElemType, capacity>::remove(int index)
+inline ElemType Vector<ElemType, capacity>::remove(int index)
 {
     ElemType el = m_pData[index];
     remove(index, index + 1);
@@ -259,7 +259,7 @@ inline ElemType vector<ElemType, capacity>::remove(int index)
 }
 
 template<typename ElemType, int capacity>
-inline int vector<ElemType, capacity>::insert(const ElemType& el, int index)
+inline int Vector<ElemType, capacity>::insert(const ElemType& el, int index)
 {
     expand();
     for (int i = m_size; i > index; i--) m_pData[i] = m_pData[i - 1];
@@ -269,33 +269,33 @@ inline int vector<ElemType, capacity>::insert(const ElemType& el, int index)
 }
 
 template<typename ElemType, int capacity>
-inline int vector<ElemType, capacity>::insert(const ElemType& el)
+inline int Vector<ElemType, capacity>::insert(const ElemType& el)
 {
     return insert(el, m_size);
 }
 
 template<typename ElemType, int capacity>
-inline void vector<ElemType, capacity>::traverse(void(*handle)(ElemType&))
+inline void Vector<ElemType, capacity>::traverse(void(*handle)(ElemType&))
 {
     for (int i = 0; i < m_size; i++) handle(m_pData[i]);
 }
 
 template<typename ElemType, int capacity>
 template<typename T>
-inline void vector<ElemType, capacity>::traverse(T& handle)
+inline void Vector<ElemType, capacity>::traverse(T& handle)
 {
     for (int i = 0; i < m_size; i++) handle(m_pData[i]);
 }
 
 template<class ElemType, int capacity>
-inline void vector<ElemType, capacity>::clone(const ElemType arr[], int left, int right)
+inline void Vector<ElemType, capacity>::clone(const ElemType arr[], int left, int right)
 {
     m_pData = new ElemType[m_capacity = 2 * (right - left)];
     for (m_size = 0; left < right; m_pData[m_size++] = arr[left++]);
 }
 
 template<class ElemType, int capacity>
-inline void vector<ElemType, capacity>::clone(const List<ElemType>& li, int left, int right)
+inline void Vector<ElemType, capacity>::clone(const iList<ElemType>& li, int left, int right)
 {
     m_pData = new ElemType[m_capacity = 2 * (right - left)];
     m_size = 0;
@@ -303,7 +303,7 @@ inline void vector<ElemType, capacity>::clone(const List<ElemType>& li, int left
 }
 
 template<typename ElemType, int capacity>
-inline void vector<ElemType, capacity>::expand()
+inline void Vector<ElemType, capacity>::expand()
 {
     if (m_size < m_capacity) return;
     if (m_capacity < capacity) m_capacity = capacity;
@@ -314,7 +314,7 @@ inline void vector<ElemType, capacity>::expand()
 }
 
 template<typename ElemType, int capacity>
-inline void vector<ElemType, capacity>::shrink()
+inline void Vector<ElemType, capacity>::shrink()
 {
     if (m_capacity < capacity << 1) return;
     if (m_size << 2 > m_capacity) return;
@@ -326,7 +326,7 @@ inline void vector<ElemType, capacity>::shrink()
 }
 
 template<typename ElemType, int capacity>
-inline int vector<ElemType, capacity>::extremum(int left, int right, Order order)
+inline int Vector<ElemType, capacity>::extremum(int left, int right, Order order)
 {
     int maximum = right;
     while (left < right--)
@@ -335,19 +335,19 @@ inline int vector<ElemType, capacity>::extremum(int left, int right, Order order
 }
 
 template<typename ElemType, int capacity>
-inline int vector<ElemType, capacity>::min(int left, int right)
+inline int Vector<ElemType, capacity>::min(int left, int right)
 {
     extremum(left, right, cptea::Asc);
 }
 
 template<typename ElemType, int capacity>
-inline int vector<ElemType, capacity>::max(int left, int right)
+inline int Vector<ElemType, capacity>::max(int left, int right)
 {
     extremum(left, right, cptea::Desc);
 }
 
 template<typename ElemType, int capacity>
-inline void vector<ElemType, capacity>::merge(int left, int middle, int right, Order order)
+inline void Vector<ElemType, capacity>::merge(int left, int middle, int right, Order order)
 {
     ElemType* pLeft = m_pData + left;
     int lenLeft = middle - left;
@@ -361,7 +361,7 @@ inline void vector<ElemType, capacity>::merge(int left, int middle, int right, O
 }
 
 template<typename ElemType, int capacity>
-inline int vector<ElemType, capacity>::partition(int left, int right, Order order)
+inline int Vector<ElemType, capacity>::partition(int left, int right, Order order)
 {
     cptea::swap(m_pData[left], m_pData[left + rand() % (right - left)]);
     ElemType   pivot = m_pData[left];
@@ -373,7 +373,7 @@ inline int vector<ElemType, capacity>::partition(int left, int right, Order orde
 }
 
 template<typename ElemType, int capacity>
-inline int vector<ElemType, capacity>::binSearch(const ElemType& el, int left, int right, Order order) const
+inline int Vector<ElemType, capacity>::binSearch(const ElemType& el, int left, int right, Order order) const
 {
     while (left < right)
     {
@@ -384,7 +384,7 @@ inline int vector<ElemType, capacity>::binSearch(const ElemType& el, int left, i
 }
 
 template<typename ElemType, int capacity>
-inline void vector<ElemType, capacity>::bubbleSort(int left, int right, Order order)
+inline void Vector<ElemType, capacity>::bubbleSort(int left, int right, Order order)
 {
     for (int last = --right; left < right; right = last)
         for (int i = last = left; i < right; i++)
@@ -393,13 +393,13 @@ inline void vector<ElemType, capacity>::bubbleSort(int left, int right, Order or
 }
 
 template<typename ElemType, int capacity>
-inline void vector<ElemType, capacity>::selectionSort(int left, int right, Order order)
+inline void Vector<ElemType, capacity>::selectionSort(int left, int right, Order order)
 {
     while (left < --right) cptea::swap(m_pData[extremum(left, right, order)], m_pData[right]);
 }
 
 template<typename ElemType, int capacity>
-inline void vector<ElemType, capacity>::mergeSort(int left, int right, Order order)
+inline void Vector<ElemType, capacity>::mergeSort(int left, int right, Order order)
 {
     if (right - left < 2) return;
     int middle = (left + right) >> 1;
@@ -409,7 +409,7 @@ inline void vector<ElemType, capacity>::mergeSort(int left, int right, Order ord
 }
 
 template<typename ElemType, int capacity>
-inline void vector<ElemType, capacity>::heapSort(int left, int right, Order order)
+inline void Vector<ElemType, capacity>::heapSort(int left, int right, Order order)
 {
     ElemType* p = m_pData + left;
     int n = right - left;
@@ -422,7 +422,7 @@ inline void vector<ElemType, capacity>::heapSort(int left, int right, Order orde
 }
 
 template<typename ElemType, int capacity>
-inline void vector<ElemType, capacity>::quickSort(int left, int right, Order order)
+inline void Vector<ElemType, capacity>::quickSort(int left, int right, Order order)
 {
     if (right - left < 2) return;
     int middle = partition(left, right, order);
@@ -431,7 +431,7 @@ inline void vector<ElemType, capacity>::quickSort(int left, int right, Order ord
 }
 
 template<typename ElemType, int capacity>
-inline void vector<ElemType, capacity>::shellSort(int left, int right, Order order)
+inline void Vector<ElemType, capacity>::shellSort(int left, int right, Order order)
 {
     for (int d = 0x3FFFFFFF; 0 < d; d >>= 1)
         for (int j = left + d; j < right; j++)
@@ -448,7 +448,7 @@ inline void vector<ElemType, capacity>::shellSort(int left, int right, Order ord
 }
 
 template<class T, int cap>
-inline std::ostream& operator<<(std::ostream& os, const vector<T, cap>& vec)
+inline std::ostream& operator<<(std::ostream& os, const Vector<T, cap>& vec)
 {
     for (int idx = 0; idx < vec.m_size; idx++)
         os << vec.m_pData[idx] << "\t ";
