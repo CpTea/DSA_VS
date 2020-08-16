@@ -1,5 +1,6 @@
 ﻿#ifndef __LISTNODE_INCLUDE
 #define __LISTNODE_INCLUDE
+#include <ostream>
 #endif
 
 #ifndef __LISTNODE_DEF
@@ -18,6 +19,8 @@ public:
     ListNode(ElemType el, ListNode<ElemType>* front = nullptr, ListNode<ElemType>* rear = nullptr);
     ListNode<ElemType>* before(const ElemType& el);
     ListNode<ElemType>* after(const ElemType& el);
+    template <typename T>
+    friend std::ostream& operator<<(std::ostream& os, const ListNode<ElemType>* node);
 };
 
 #endif
@@ -54,5 +57,11 @@ inline ListNode<ElemType>* ListNode<ElemType>::after(const ElemType& el)
     return pNode;
 }
 
+template<typename T>
+inline std::ostream& operator<<(std::ostream& os, const ListNode<T>* node)
+{
+    if (node) return os << node->data;
+    else return os;
+}
 
 #endif

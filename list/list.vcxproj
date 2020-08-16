@@ -144,7 +144,6 @@
     <ClInclude Include="listnode.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="list.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
