@@ -1,5 +1,6 @@
 ﻿#ifndef __CPTEA_ALGORITHMS_INCLUDE
 #define __CPTEA_ALGORITHMS_INCLUDE
+#include <cstdint>
 #endif
 
 #ifndef __CPTEA_ALGORTIHMS_FUNC_DEF
@@ -19,6 +20,9 @@
 
 namespace cptea
 {
+    using size_type = std::int64_t;
+    using position_type = std::int64_t;
+
     template <typename ElemType> bool Asc(const ElemType&, const ElemType&);
     template <typename ElemType> bool Desc(const ElemType&, const ElemType&);
     template <typename ElemType> void swap(ElemType&, ElemType&);
@@ -28,10 +32,10 @@ namespace cptea
     using Order = bool (*)(const ElemType&, const ElemType&);
 
     template <typename ElemType>
-    int percolateDown(ElemType arr[], int len, int idx, cptea::Order<ElemType> order);
+    position_type percolateDown(ElemType arr[], size_type len, position_type idx, cptea::Order<ElemType> order);
 
     template <typename ElemType>
-    void heapify(ElemType arr[], const int len, cptea::Order<ElemType> order);
+    void heapify(ElemType arr[], size_type len, cptea::Order<ElemType> order);
 }
 
 #endif
@@ -70,9 +74,9 @@ bool cptea::eq(const ElemType& x, const ElemType& y)
 }
 
 template <typename ElemType>
-int cptea::percolateDown(ElemType arr[], int len, int idx, cptea::Order<ElemType> order)
+cptea::position_type cptea::percolateDown(ElemType arr[], size_type len, position_type idx, cptea::Order<ElemType> order)
 {
-    int j;
+    size_type j;
     while (idx != (j = ProperParent(arr, len, idx, order)))
     {
         cptea::swap(arr[idx], arr[j]);
@@ -82,9 +86,9 @@ int cptea::percolateDown(ElemType arr[], int len, int idx, cptea::Order<ElemType
 }
 
 template <typename ElemType>
-void cptea::heapify(ElemType arr[], const int len, cptea::Order<ElemType> order)
+void cptea::heapify(ElemType arr[], size_type len, cptea::Order<ElemType> order)
 {
-    for (int i = (len >> 1) - 1; i >= 0; i--) cptea::percolateDown(arr, len, i, order);
+    for (size_type i = (len >> 1) - 1; i >= 0; i--) cptea::percolateDown(arr, len, i, order);
 }
 
 #endif

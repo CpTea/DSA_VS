@@ -6,21 +6,27 @@
 #ifndef __LISTNODE_DEF
 #define __LISTNODE_DEF
 
-template <typename ElemType>
+template <typename _Ty>
 class ListNode
 {
 public:
-    ElemType data;
-    ListNode<ElemType>* front;
-    ListNode<ElemType>* rear;
+    using value_type = _Ty;
+    using pointer = _Ty*;
+    using const_pointer = const _Ty*;
+    using reference = _Ty&;
+    using const_reference = const _Ty&;
+    using position_type = ListNode<_Ty>*;
+
+public:
+    value_type data;
+    position_type front;
+    position_type rear;
 
 public:
     ListNode();
-    ListNode(ElemType el, ListNode<ElemType>* front = nullptr, ListNode<ElemType>* rear = nullptr);
-    ListNode<ElemType>* before(const ElemType& el);
-    ListNode<ElemType>* after(const ElemType& el);
-    template <typename T>
-    friend std::ostream& operator<<(std::ostream& os, const ListNode<ElemType>* node);
+    ListNode(value_type el, position_type front = nullptr, position_type rear = nullptr);
+    position_type before(const_reference el);
+    position_type after(const_reference el);
 };
 
 #endif
@@ -28,40 +34,33 @@ public:
 #ifndef __LISTNODE_IMPL
 #define __LISTNODE_IMPL
 
-template<typename ElemType>
-inline ListNode<ElemType>::ListNode() { }
+template<typename _Ty>
+inline ListNode<_Ty>::ListNode() : data(NULL), front(nullptr), rear(nullptr) { }
 
-template<typename ElemType>
-inline ListNode<ElemType>::ListNode(ElemType el, ListNode<ElemType>* front, ListNode<ElemType>* rear)
+template<typename _Ty>
+inline ListNode<_Ty>::ListNode(value_type el, position_type front, position_type rear)
 {
     this->data = el;
     this->front = front;
     this->rear = rear;
 }
 
-template<typename ElemType>
-inline ListNode<ElemType>* ListNode<ElemType>::before(const ElemType& el)
+template<typename _Ty>
+inline ListNode<_Ty>* ListNode<_Ty>::before(const_reference el)
 {
-    ListNode<ElemType>* pNode = new ListNode(el, front, this);
+    position_type pNode = new ListNode(el, front, this);
     front->rear = pNode;
     front = pNode;
     return pNode;
 }
 
-template<typename ElemType>
-inline ListNode<ElemType>* ListNode<ElemType>::after(const ElemType& el)
+template<typename _Ty>
+inline ListNode<_Ty>* ListNode<_Ty>::after(const_reference el)
 {
-    ListNode<ElemType>* pNode = new ListNode(el, this, rear);
+    position_type pNode = new ListNode(el, this, rear);
     rear->front = pNode;
     rear = pNode;
     return pNode;
-}
-
-template<typename T>
-inline std::ostream& operator<<(std::ostream& os, const ListNode<T>* node)
-{
-    if (node) return os << node->data;
-    else return os;
 }
 
 #endif
