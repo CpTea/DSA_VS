@@ -9,13 +9,15 @@
 template <typename _Ty>
 class ListNode
 {
+private:
+    using self_type = ListNode;
 public:
     using value_type = _Ty;
-    using pointer = _Ty*;
-    using const_pointer = const _Ty*;
-    using reference = _Ty&;
-    using const_reference = const _Ty&;
-    using position_type = ListNode<_Ty>*;
+    using pointer = value_type*;
+    using const_pointer = const value_type*;
+    using reference = value_type&;
+    using const_reference = const value_type&;
+    using position_type = self_type*;
 
 public:
     value_type data;

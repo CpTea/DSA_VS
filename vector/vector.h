@@ -13,6 +13,8 @@ typedef int64_t size_type;
 template <typename _Ty, size_type capacity = 5>
 class Vector
 {
+private:
+    using self_type = Vector;
 public:
     using value_type = _Ty;
     using pointer = value_type*;
@@ -29,8 +31,8 @@ public:
     Vector(size_type size = 0, value_type default_val = 0);
     Vector(const_pointer arr, size_type len);
     Vector(const_pointer arr, position_type left, position_type right);
-    Vector(const Vector& vec);
-    Vector(const Vector& vec, position_type left, position_type right);
+    Vector(const self_type& vec);
+    Vector(const self_type& vec, position_type left, position_type right);
     Vector(init_list li);
     Vector(init_list li, position_type left, position_type right);
     ~Vector();
@@ -111,13 +113,13 @@ inline Vector<_Ty, capacity>::Vector(const_pointer arr, position_type left, posi
 }
 
 template<typename _Ty, size_type capacity>
-inline Vector<_Ty, capacity>::Vector(const Vector& vec)
+inline Vector<_Ty, capacity>::Vector(const self_type& vec)
 {
     clone(vec.m_pData, 0, vec.m_size);
 }
 
 template<typename _Ty, size_type capacity>
-inline Vector<_Ty, capacity>::Vector(const Vector& vec, position_type left, position_type right)
+inline Vector<_Ty, capacity>::Vector(const self_type& vec, position_type left, position_type right)
 {
     clone(vec.m_pData, left, right);
 }

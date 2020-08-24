@@ -9,16 +9,19 @@
 template <typename _Ty, typename Container = Vector<_Ty>>
 class Stack : public Container
 {
+private:
+    using self_type = Stack;
+    using super_type = Container;
 public:
-    using value_type = typename Container::value_type;
-    using pointer = typename Container::pointer;
-    using const_pointer = typename Container::const_pointer;
-    using reference = typename Container::reference;
-    using const_reference = typename Container::const_reference;
-    using size_type = typename Container::size_type;
-    using position_type = typename Container::position_type;
-    using init_list = typename Container::init_list;
-    using order = typename Container::order;
+    using value_type = typename super_type::value_type;
+    using pointer = typename super_type::pointer;
+    using const_pointer = typename super_type::const_pointer;
+    using reference = typename super_type::reference;
+    using const_reference = typename super_type::const_reference;
+    using size_type = typename super_type::size_type;
+    using position_type = typename super_type::position_type;
+    using init_list = typename super_type::init_list;
+    using order = typename super_type::order;
 
 public:
     void push(const_reference el);
@@ -36,17 +39,17 @@ public:
 template<typename _Ty, typename Container>
 inline void Stack<_Ty, Container>::push(const_reference el)
 {
-    Container::last(el);
+    super_type::last(el);
 }
 
 template<typename _Ty, typename Container>
 inline typename Stack<_Ty, Container>::value_type Stack<_Ty, Container>::pop()
 {
-    return Container::remove(Container::last());
+    return super_type::remove(super_type::last());
 }
 
 template<typename _Ty, typename Container>
 inline typename Stack<_Ty, Container>::reference Stack<_Ty, Container>::top() const
 {
-    return Container::operator[](Container::last());
+    return super_type::operator[](super_type::last());
 }

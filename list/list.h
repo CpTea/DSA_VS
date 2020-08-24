@@ -12,18 +12,20 @@
 template <typename _Ty>
 class List
 {
+private:
+    using self_type = List;
 public:
     using value_type = _Ty;
-    using node = ListNode<value_type>;
+    using node_type = ListNode<value_type>;
+    using size_type = int64_t;
+    using position_type = typename node_type::position_type;
+    using order = cptea::Order<value_type>;
+
     using pointer = value_type*;
     using const_pointer = const value_type*;
-    using reference = typename value_type&;
+    using reference = value_type&;
     using const_reference = const value_type&;
-    using const_ref = const reference;
-    using size_type = int64_t;
-    using position_type = node*;
     using init_list = const std::initializer_list<value_type>&;
-    using order = cptea::Order<value_type>;
 
 public:
     // initialize
@@ -391,8 +393,8 @@ inline void List<_Ty>::clone(position_type begin, size_type len)
 template<typename _Ty>
 inline void List<_Ty>::init(void)
 {
-    m_pHead = new node;
-    m_pTail = new node;
+    m_pHead = new node_type;
+    m_pTail = new node_type;
     m_pHead->rear = m_pTail;
     m_pTail->front = m_pHead;
     m_pHead->front = nullptr;
